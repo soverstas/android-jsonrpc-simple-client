@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="4dp">
+    <!-- parameter 1 -->
+    <EditText
+            android:id="@+id/param1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="set first param"
+            android:digits="0123456789."
+            android:maxLength="6"/>
+    <!-- method -->
+    <EditText
+            android:id="@+id/operation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="+ - / *"
+            android:digits="+-/*"
+            android:maxLength="1"/>
+    <!-- parameter 2 -->
+    <EditText
+            android:id="@+id/param2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="set second param"
+            android:digits="0123456789."
+            android:maxLength="6"/>
+    <!-- button for request result -->
+    <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="get result"/>
+    <!-- result holder -->
+    <TextView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+</LinearLayout>
+
