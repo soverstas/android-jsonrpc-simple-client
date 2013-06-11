@@ -36,11 +36,14 @@ public class HttpManager {
     }
 
     /**
-     * form JSON and send to server
+     * form JSON and process server
+     * response, conversion in JSON object
      *
      * @param method
      * @param params
      * @return
+     * @throws IOException
+     * @throws JSONException
      */
     protected JSONObject call(String method, JSONArray params) throws IOException, JSONException {
         HttpPost httpPost = new HttpPost(URL);
@@ -50,13 +53,21 @@ public class HttpManager {
         options.put("method", method);
         options.put("params", params);
         Log.d(TAG, "call api request: " + options.toString());
-        StringEntity entity = new StringEntity(options.toString(),
-                HTTP.UTF_8);
+        StringEntity entity = new StringEntity(options.toString(), HTTP.UTF_8);
         entity.setContentType("application/json");
         httpPost.setEntity(entity);
         String jsonstring = processHttpPost(httpPost);
         return new JSONObject(jsonstring);
     }
+
+    /**
+     * send request data to server,
+     * get result
+     *
+     * @param httpPost
+     * @return
+     * @throws IOException
+     */
 
     protected String processHttpPost(HttpPost httpPost) throws IOException {
         HttpResponse response;
@@ -82,7 +93,22 @@ public class HttpManager {
         return operation("div", a, b);
     }
 
-    private static Double operation(String operation, double a, double b) throws ServerException, JSONException, IOException {
+    /**
+     * method for call server API
+     * and process server error if
+     * get or return answer
+     *
+     * @param operation
+     * @param a
+     * @param b
+     * @return
+     * @throws ServerException
+     * @throws JSONException
+     * @throws IOException
+     */
+
+    private static Double operation(String operation, double a, double b)
+            throws ServerException, JSONException, IOException {
         JSONArray array = new JSONArray();
         array.put(a);
         array.put(b);

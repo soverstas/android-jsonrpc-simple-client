@@ -37,6 +37,14 @@ public class AsyncManager {
             mOnResultListener = onResultListener;
         }
 
+        /**
+         * call HttpManager methods for operations
+         * catch all errors and for error message for user
+         *
+         * @param strings
+         * @return
+         */
+
         @Override
         protected Double doInBackground(String... strings) {
             try {
@@ -80,11 +88,21 @@ public class AsyncManager {
             return null;
         };
 
+        /**
+         * start executing AsyncTask
+         * work in IU thread
+         */
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             mOnResultListener.onStartProcess();
         }
+
+        /**
+         * AsyncTask result
+         * work in IU thread
+         */
 
         @Override
         protected void onPostExecute(Double s) {

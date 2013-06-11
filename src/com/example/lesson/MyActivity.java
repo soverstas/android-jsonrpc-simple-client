@@ -60,16 +60,16 @@ public class MyActivity extends Activity implements IAsyncListener, View.OnClick
             String params[] = null;
             switch (view.getId()) {
                 case R.id.add:
-                    params = new String[]{"+",a, b};
+                    params = new String[]{"+", a, b};
                     break;
                 case R.id.sub:
-                    params = new String[]{"-",a, b};
+                    params = new String[]{"-", a, b};
                     break;
                 case R.id.mul:
-                    params = new String[]{"*",a, b};
+                    params = new String[]{"*", a, b};
                     break;
                 case R.id.div:
-                    params = new String[]{"/",a, b};
+                    params = new String[]{"/", a, b};
                     break;
             }
             //request
