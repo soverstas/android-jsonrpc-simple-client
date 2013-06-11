@@ -1,7 +1,12 @@
 package com.example.lesson;
 
 import android.os.AsyncTask;
-import android.os.ParcelFormatException;
+import com.example.lesson.Exeptions.ServerException;
+import org.apache.http.ConnectionClosedException;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 /**
  * class singleton for manage server requests.
@@ -25,14 +30,15 @@ public class AsyncManager {
     /**
      * class for request on server
      */
-    private class RequestAsync extends AsyncTask<String, Void, String> {
+    private class RequestAsync extends AsyncTask<String, Void, Double> {
         private IAsyncListener mOnResultListener;
+        private String mError = null;
         public RequestAsync(IAsyncListener onResultListener) {
             mOnResultListener = onResultListener;
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected Double doInBackground(String... strings) {
             try {
                 String operation = strings[0];
                 double a = Double.valueOf(strings[1]);
@@ -47,17 +53,32 @@ public class AsyncManager {
                         return HttpManager.mul(a, b);
                     case '/':
                         return HttpManager.div(a, b);
-                    default:
-                        return "can't identify method";
                 }
-            } catch (ParcelFormatException e) {
+            } catch (ServerException e) {
+                mError = e.getMessage();
                 e.printStackTrace();
-                return e.getMessage();
-            } catch (Exception e) {
+            } catch (ConnectionClosedException e) {
+                mError = e.getMessage();
                 e.printStackTrace();
-                return e.getMessage();
+            } catch (SocketTimeoutException e) {
+                mError = e.getMessage();
+                e.printStackTrace();
+            } catch (JSONException e) {
+                mError = e.getMessage();
+                e.printStackTrace();
+            } catch (IOException e) {
+                mError = e.getMessage();
+                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                mError = e.getMessage();
+                e.printStackTrace();
+            }  catch (Exception e) {
+                mError = e.getMessage();
+                e.printStackTrace();
             }
-        }
+            //if get errors - return null
+            return null;
+        };
 
         @Override
         protected void onPreExecute() {
@@ -66,9 +87,13 @@ public class AsyncManager {
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Double s) {
             super.onPostExecute(s);
-            mOnResultListener.onGetResult(s);
+            if(mError == null) {
+                mOnResultListener.onGetResult(String.valueOf(s));
+            } else {
+                mOnResultListener.onGetResult(mError);
+            }
         }
     }
 }

@@ -6,10 +6,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MyActivity extends Activity implements IAsyncListener {
+public class MyActivity extends Activity implements IAsyncListener, View.OnClickListener {
     private EditText mParam1;
     private EditText mParam2;
-    private EditText mOperation;
     private TextView mResult;
 
     @Override
@@ -23,29 +22,13 @@ public class MyActivity extends Activity implements IAsyncListener {
         super.onResume();
         mParam1 = (EditText) findViewById(R.id.param1);
         mParam2 = (EditText) findViewById(R.id.param2);
-        mOperation = (EditText) findViewById(R.id.operation);
         mResult = (TextView) findViewById(R.id.result);
 
-        findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String method = mOperation.getText().toString();
-                String a = mParam1.getText().toString();
-                String b = mParam2.getText().toString();
-                if(method.isEmpty() || a.isEmpty() || b.isEmpty()) {
-                    setTextToResultHolder("Can't send this request. Invalid parameters.");
-                } else {
-                    //form parameters for call on server
-                    String params[] = new String[]{
-                            mOperation.getText().toString(),
-                            mParam1.getText().toString(),
-                            mParam2.getText().toString()
-                    };
-                    //request
-                    AsyncManager.getInstance().process(MyActivity.this, params);
-                }
-            }
-        });
+        findViewById(R.id.add).setOnClickListener(this);
+        findViewById(R.id.sub).setOnClickListener(this);
+        findViewById(R.id.mul).setOnClickListener(this);
+        findViewById(R.id.div).setOnClickListener(this);
+
 
     }
     //set result text
@@ -64,5 +47,33 @@ public class MyActivity extends Activity implements IAsyncListener {
     @Override
     public void onGetResult(String result) {
         setTextToResultHolder(result);
+    }
+
+    @Override
+    public void onClick(View view) {
+        String a = mParam1.getText().toString();
+        String b = mParam2.getText().toString();
+        if(a.isEmpty() || b.isEmpty()) {
+            setTextToResultHolder("Can't send this request. Invalid parameters.");
+        } else {
+            //form parameters for call on server
+            String params[] = null;
+            switch (view.getId()) {
+                case R.id.add:
+                    params = new String[]{"+",a, b};
+                    break;
+                case R.id.sub:
+                    params = new String[]{"-",a, b};
+                    break;
+                case R.id.mul:
+                    params = new String[]{"*",a, b};
+                    break;
+                case R.id.div:
+                    params = new String[]{"/",a, b};
+                    break;
+            }
+            //request
+            AsyncManager.getInstance().process(MyActivity.this, params);
+        }
     }
 }
