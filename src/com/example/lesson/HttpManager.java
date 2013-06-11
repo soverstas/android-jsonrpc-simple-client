@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class HttpManager {
     private static final String TAG = HttpManager.class.getSimpleName();
-    private static HttpManager mInstance;
+    private static HttpManager sInstance;
     private DefaultHttpClient mDefaultHttpClient;
     private static final String URL = "http://shagren.stagingmonster.com/calc/";
 
@@ -29,10 +29,10 @@ public class HttpManager {
     }
 
     public static HttpManager getInstance() {
-        if (mInstance == null) {
-            mInstance = new HttpManager();
+        if (sInstance == null) {
+            sInstance = new HttpManager();
         }
-        return mInstance;
+        return sInstance;
     }
 
     /**

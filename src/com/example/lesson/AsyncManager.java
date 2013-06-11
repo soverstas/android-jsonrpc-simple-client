@@ -13,14 +13,14 @@ import java.net.SocketTimeoutException;
  */
 
 public class AsyncManager {
-    private static AsyncManager mInstance;
+    private static AsyncManager sInstance;
     private AsyncManager() {}
 
     public static AsyncManager getInstance() {
-        if(mInstance == null) {
-            mInstance = new AsyncManager();
+        if(sInstance == null) {
+            sInstance = new AsyncManager();
         }
-        return mInstance;
+        return sInstance;
     }
     //create new request
     public void process(IAsyncListener onResultListener, String... params) {
@@ -78,9 +78,6 @@ public class AsyncManager {
                 mError = e.getMessage();
                 e.printStackTrace();
             } catch (NumberFormatException e) {
-                mError = e.getMessage();
-                e.printStackTrace();
-            }  catch (Exception e) {
                 mError = e.getMessage();
                 e.printStackTrace();
             }
